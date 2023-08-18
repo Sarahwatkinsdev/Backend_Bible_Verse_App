@@ -25,10 +25,7 @@ def create_app():
     login_manager.login_view = 'auth.login'
 
     # Import and register blueprints
-    from app.routes import save_routes, verse_routes, user_routes
-
-    app.register_blueprint(save_routes.save_bp)
-    app.register_blueprint(verse_routes.verse_bp)
-    app.register_blueprint(user_routes.user_bp)
+    from app.routes import register_routes
+    register_routes(app)  # Register all routes w/ register_routes func
 
     return app
