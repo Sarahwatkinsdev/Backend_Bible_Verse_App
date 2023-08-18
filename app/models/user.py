@@ -1,5 +1,5 @@
 from app import db
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from app.models.save import SavedVerse
 
 class User(db.Model, UserMixin):
@@ -11,3 +11,9 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User(id={self.id}, username='{self.username}')"
+    
+from app import login_manager
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
