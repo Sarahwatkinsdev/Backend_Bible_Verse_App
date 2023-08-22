@@ -43,22 +43,28 @@ def search_verses():
 
     if not search_query:
         return jsonify({'message': 'Search query is required'}), 400
+
     
     # Retrieve the BIBLE_API_KEY from .env file
-    api_key = os.environ.get('BIBLE_API_KEY')
+    api_key = current_app.config['BIBLE_API_KEY']
+    bibleVersionID = 'de4e12af7f28f599-01'
+    offset = 0
+
     if not api_key:
         return jsonify({'message': 'Bible API key is missing'}), 500
 
     # Retrieve verses from the Bible API based on search query
-    api_key = current_app.config['BIBLE_API_KEY']
-    api_url = f'https://api.scripture.api.bible/v1/bibles={search_query}&api_key={api_key}'
-    response = requests.get(api_url)
+
+    headers = {'api-key': api_key, 'accept': 'application/json'}
+    api_url = f'https://api.scripture.api.bible/v1/bibles/{bibleVersionID}/search?query={search_query}&offset={offset}'
+
+    response = requests.get(api_url, headers=headers)
 
     if response.status_code != 200:
         return jsonify({'message': 'Failed to retrieve verses from the API'}), 500
 
-    verses_data = response.json()
+    verses_data = response.json()['data']['verses']
     # Extract and format the relevant verse information from the API response
-    verses = [{'text': verse_data['text']} for verse_data in verses_data]
+    verses = [{'text': verse_data['text'], 'reference': verse_data['reference']} for verse_data in verses_data]
 
     return jsonify({'verses': verses})

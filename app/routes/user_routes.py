@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response
 from app.models.user import User
 from app import db
-
+import json
 
 user_bp = Blueprint("user", __name__, url_prefix="/user")
 
@@ -19,7 +19,7 @@ def login_user():
     if not user or not user.check_password(password):
         return make_response(jsonify({"message": "Invalid username or password."}), 401)
 
-    return jsonify({"message": "Login successful.", "user": user.to_dict()}), 200
+    return jsonify({"message": "Login successful.", "user": user.serialize()}), 200
 
 
 @user_bp.route("/register", methods=["POST"])
@@ -42,7 +42,7 @@ def register_user():
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify(new_user.to_dict()), 201
+    return jsonify(new_user.serialize()), 201
 
 # @user_bp.route("/profile", methods=["GET"])
 # def get_user_profile():

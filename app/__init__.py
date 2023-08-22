@@ -12,11 +12,11 @@ BASE_PATH = Path(__file__).resolve().parent
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
-migrate = Migrate()
 
 def create_app():
     app = Flask(__name__, static_folder=BASE_PATH.joinpath('static'))
     app.config.from_object('app.config')
+    migrate = Migrate(app, db)
 
     # Load environment variables from .env
     load_dotenv()

@@ -3,10 +3,10 @@ info:
   title: Daily Bread API
   description: API description.
   version: 1.0.0
-host: localhost:5000
+host: 127.0.0.1:5000
 basePath: /
 schemes:
-  - https
+  - http
 paths:
   /profile:
     get:
@@ -16,3 +16,86 @@ paths:
       responses:
         200:
           description: OK
+
+  /user/register:
+    post:
+      summary: Create the profile of the user
+      produces:
+        - application/json
+      responses:
+        201:
+          description: OK
+      parameters:
+        - in: body
+          name: user
+          schema:
+            $ref: '#/definitions/User'
+  /user/login:
+    post:
+      summary: Login the user
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+      parameters:
+        - in: body
+          name: user
+          schema:
+            $ref: '#/definitions/UserLogin'
+  /feature:
+    post:
+      summary: Create a feature
+      produces:
+        - application/json
+      responses:
+        201:
+          description: OK
+      parameters:
+        - in: body
+          name: feature
+          schema:
+            $ref: '#/definitions/Feature'
+    get:
+      summary: Get the latest feature
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /search_verses:
+    get:
+      summary: Search verses
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+      parameters:
+        - in: query
+          name: query
+definitions:
+  User:
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+  UserLogin:
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+  Feature:
+    properties:
+      prefix:
+        type: string
+      verse_text:
+        type: string
+      verse_ref:
+        type: string
