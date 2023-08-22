@@ -1,0 +1,18 @@
+swagger: "2.0"
+info:
+  title: Daily Bread API
+  description: API description.
+  version: 1.0.0
+host: localhost:5000
+basePath: /
+schemes:
+  - https
+paths:
+  /profile:
+    get:
+      summary: Return the profile of the user
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK

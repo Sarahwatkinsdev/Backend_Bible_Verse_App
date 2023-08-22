@@ -5,6 +5,8 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 from flask_swagger_ui import get_swaggerui_blueprint
+from pathlib import Path
+BASE_PATH = Path(__file__).resolve().parent
 
 # Initialize extensions
 db = SQLAlchemy()
@@ -13,7 +15,7 @@ login_manager = LoginManager()
 migrate = Migrate()
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder=BASE_PATH.joinpath('static'))
     app.config.from_object('app.config')
 
     # Load environment variables from .env
@@ -30,14 +32,14 @@ def create_app():
     register_routes(app)  # Register all routes w/ register_routes func
     
     SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
-    API_URL = '/static/swagger.json'  # Your API definition file's URL
+    API_URL = '/static/swagger.yaml'  # Your API definition file's URL
     
     # Call factory function to create blueprint
     swaggerui_blueprint = get_swaggerui_blueprint(
         SWAGGER_URL,  # Swagger UI static files mapped to '{SWAGGER_URL}/dist/'
         API_URL,
         config={  # Swagger UI config overrides
-            'app_name': "Test application"
+            'app_name': "Daily Bread"
         }
     )
     
