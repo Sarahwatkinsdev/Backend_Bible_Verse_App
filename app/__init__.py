@@ -6,6 +6,8 @@ from flask_migrate import Migrate
 from dotenv import load_dotenv
 from flask_swagger_ui import get_swaggerui_blueprint
 from pathlib import Path
+from flask_cors import CORS
+
 BASE_PATH = Path(__file__).resolve().parent
 
 # Initialize extensions
@@ -15,6 +17,7 @@ login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__, static_folder=BASE_PATH.joinpath('static'))
+    CORS(app)
     app.config.from_object('app.config')
     migrate = Migrate(app, db)
 
